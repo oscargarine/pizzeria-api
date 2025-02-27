@@ -63,6 +63,11 @@ const Pizza = () => {
             <strong>Precio:</strong> ${pizza.price?.toLocaleString()}
           </p>
 
+          {/* Precio */}
+          <p className="card-text fs-5 mt-2">
+            <strong>Descripción:</strong> {pizza.desc}
+          </p>
+
         </div>
       </div>
     </div>

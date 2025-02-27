@@ -1,4 +1,5 @@
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom'
 
 const NavbarComponent = () => {
   const total = 25000;
@@ -25,37 +26,45 @@ const NavbarComponent = () => {
         <Navbar.Collapse id="navbar-nav">
           {/* Links al centro */}
           <Nav className="mx-auto">
-            <Button variant="outline-light" href="#home" className="mx-2">
+            <Link to='/' className='text-decoration-none ms-3 text-white'>
               Home
-            </Button>
+            </Link>
             {/* Condicional: Si token es true, muestra Profile y Logout */}
             {token ? (
               <>
-                <Button variant="outline-light" href="#profile" className="mx-2">
+                <Link to='/profile' className='text-decoration-none ms-3 text-white'>
                   Profile
-                </Button>
-                <Button variant="outline-light" href="#logout" className="mx-2">
+                </Link>
+                <Link to='/logout' className='text-decoration-none ms-3 text-white'>
                   Logout
-                </Button>
+                </Link>
               </>
             ) : (
               /* Si token es false, muestra Login y Register */
               <>
-                <Button variant="outline-light" href="login" className="mx-2">
+                <Link to='/login' className='text-decoration-none ms-3 text-white'>
                   Login
-                </Button>
-                <Button variant="outline-light" href="register" className="mx-2">
+                </Link>
+                <Link to='/register' className='text-decoration-none ms-3 text-white'>
                   Register
-                </Button>
+                </Link>
               </>
             )}
           </Nav>
 
           {/* Botón de pagar (derecha) */}
           <Nav className="ms-auto">
-            <Button variant="light" href="#total" className="mx-2">
-            🛒Pagar: ${total.toLocaleString()}
+            <Button as={Link} to='/cart' className="mx-2">
+            {/* 🛒Pagar: ${total.toLocaleString()} */}
+            🛒Pagar
             </Button>
+          </Nav>
+
+          {/* Botón de pagar (derecha) */}
+          <Nav className="ms-auto">
+            <Link to='/profile' className='text-decoration-none ms-3 text-white'>
+              Profile
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
