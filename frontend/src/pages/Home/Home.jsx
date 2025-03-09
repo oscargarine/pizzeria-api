@@ -1,54 +1,32 @@
-import { useState, useEffect } from 'react'
-import Header from '../../components/Header/Header'
-import CardPizza from '../../components/CardPizza/CardPizza'
-// import { pizzas } from '../../pizzas.js'
+import { usePizzas } from '../../context/PizzaContext';
+import CardPizza from '../../components/CardPizza/CardPizza';
+import Header from '../../components/Header/Header';
 
 const Home = () => {
-  const [pizzas, setPizzas] = useState([])
+  const { pizzas, loading, error } = usePizzas();
 
-  const BASE_URL = 'http://localhost:5000/api/pizzas'
-  const getPizzas = async () => {
-    try {
-      const res = await fetch( BASE_URL )
-      if (!res.ok) {
-        throw new Error(`Error: ${res.status} ${res.statusText}`)
-      }
-      const data = await res.json()
-      console.log(data)
-      return setPizzas(data)
-    }catch(error){
-      console.log("Error obteniendo las Pizzas", error.message)
-    }
-
-  }
-
-  useEffect(() => {
-    getPizzas()
-  }, [])
+  if (loading) return <p className="text-center">Cargando pizzas...</p>;
+  if (error) return <p className="text-center">Error: {error}</p>;
 
   return (
     <>
       <Header />
-
-    <div className="contenedor-cards">
-      <div className="cards">
-
-        {pizzas.map((pizza) => (
-          <CardPizza 
-            key={pizza.id}
-            img={pizza.img}
-            ingredients={pizza.ingredients} 
-            name={pizza.name}
-            price={pizza.price}
-          />
-        ))}
-
+      <div className="contenedor-cards">
+        <div className="cards">
+          {pizzas.map((pizza) => (
+            <CardPizza
+              key={pizza.id}
+              id={pizza.id}
+              img={pizza.img}
+              name={pizza.name}
+              price={pizza.price}
+              ingredients={pizza.ingredients}
+            />
+          ))}
+        </div>
       </div>
-    </div>
-
-
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

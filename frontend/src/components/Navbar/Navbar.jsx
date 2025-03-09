@@ -1,8 +1,12 @@
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useCart } from '../../context/CartContext'; // Importamos el contexto del carrito
 
 const NavbarComponent = () => {
-  const total = 25000;
+  const { calcTotal } = useCart(); // Obtener el total acumulado del carrito
+
+  const formattedTotal = calcTotal.toLocaleString(); // Formateamos el total con separadores de miles
+
   const token = false; // Cambia a true para probar el comportamiento
 
   return (
@@ -29,7 +33,6 @@ const NavbarComponent = () => {
             <Link to='/' className='text-decoration-none ms-3 text-white'>
               Home
             </Link>
-            {/* Condicional: Si token es true, muestra Profile y Logout */}
             {token ? (
               <>
                 <Link to='/profile' className='text-decoration-none ms-3 text-white'>
@@ -40,7 +43,6 @@ const NavbarComponent = () => {
                 </Link>
               </>
             ) : (
-              /* Si token es false, muestra Login y Register */
               <>
                 <Link to='/login' className='text-decoration-none ms-3 text-white'>
                   Login
@@ -55,17 +57,10 @@ const NavbarComponent = () => {
           {/* Botón de pagar (derecha) */}
           <Nav className="ms-auto">
             <Button as={Link} to='/cart' className="mx-2">
-            {/* 🛒Pagar: ${total.toLocaleString()} */}
-            🛒Pagar
+              🛒 Pagar: ${formattedTotal}
             </Button>
           </Nav>
 
-          {/* Botón de pagar (derecha) */}
-          <Nav className="ms-auto">
-            <Link to='/profile' className='text-decoration-none ms-3 text-white'>
-              Profile
-            </Link>
-          </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
