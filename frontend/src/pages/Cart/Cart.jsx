@@ -1,9 +1,11 @@
 import { useCart } from '../../context/CartContext';
+import { useUser } from '../../context/UserContext'
 
 const Cart = () => {
   const { cart, increaseQtty, decreaseQtty, calcTotal, removeFromCart } = useCart();
+  const { token } = useUser() // Obtenemos el token del contexto
 
-  console.log("Carrito en Cart.jsx:", cart); // Verificar qué llega al carrito
+  // console.log("Carrito en Cart.jsx:", cart); // Verificar qué llega al carrito
 
   return (
     <div className="container mt-4">
@@ -48,7 +50,12 @@ const Cart = () => {
 
       <h4 className="text-end mt-3">Total: ${calcTotal.toLocaleString()}</h4>
       <div className="text-end mt-3">
-        <button className="btn btn-success btn-sm text-end pagar-btn">Pagar: ${calcTotal.toLocaleString()}</button>
+        <button 
+          className="btn btn-success btn-sm text-end pagar-btn"
+          disabled={ !token }//deshabilitamos el botón si el token es false
+        >
+          Pagar: ${calcTotal.toLocaleString()}
+        </button>
       </div>
     </div>
   );

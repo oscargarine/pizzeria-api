@@ -19,8 +19,8 @@ const Home = () => {
               id={pizza.id}
               img={pizza.img}
               name={pizza.name}
-              price={pizza.price}
               ingredients={pizza.ingredients}
+              price={pizza.price}
             />
           ))}
         </div>

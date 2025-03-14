@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useCart } from '../../context/CartContext'; // Importamos el contexto
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'; // Para mejorar compatibilidad con React
+import { Link } from 'react-router-dom'
 
 const MySwal = withReactContent(Swal);
 
@@ -61,9 +62,9 @@ const Card = ({ img, name, price, ingredients, id }) => {
 
         {/* Botones */}
         <div className="d-flex justify-content-around mt-3">
-          <button className="btn btn-outline-dark">
+          <Link to={`/pizza/${id}`} className="btn btn-outline-dark">
             Ver Más <span role="img" aria-label="ver más">👀</span>
-          </button>
+          </Link>
           <button className="btn btn-dark" onClick={handleAddToCart}>
             Añadir <span role="img" aria-label="carrito">🛒</span>
           </button>

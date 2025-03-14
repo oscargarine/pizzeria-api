@@ -1,13 +1,25 @@
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext'; // Importamos el contexto del carrito
+import { useUser } from '../../context/UserContext'; // Importamos el contexto del usuario
 
 const NavbarComponent = () => {
   const { calcTotal } = useCart(); // Obtener el total acumulado del carrito
 
-  const formattedTotal = calcTotal.toLocaleString(); // Formateamos el total con separadores de miles
 
-  const token = false; // Cambia a true para probar el comportamiento
+
+  // const token = false; // Falso token
+  const { token, logout } = useUser() //Obtenemos el token y el logout del contexto
+  const navigate = useNavigate()
+
+  const formattedTotal = calcTotal.toLocaleString(); // Formateamos el total con separadores de miles
+  const validateRoot = ({ isActive }) => isActive ? 'menu-active' : 'menu-inactive'
+
+  // logout con redireccion opcional
+  const handleLogout = () => {
+    logout()
+    navigate('/') // opcional: redirige al Home despues del logout
+  }
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="text-white">
@@ -30,33 +42,50 @@ const NavbarComponent = () => {
         <Navbar.Collapse id="navbar-nav">
           {/* Links al centro */}
           <Nav className="mx-auto">
-            <Link to='/' className='text-decoration-none ms-3 text-white'>
+            <NavLink to='/' className='text-decoration-none ms-3 text-white'>
               Home
-            </Link>
+            </NavLink>
             {token ? (
               <>
-                <Link to='/profile' className='text-decoration-none ms-3 text-white'>
+                <NavLink 
+                  to='/profile' 
+                  onClick={validateRoot}
+                  className='text-decoration-none ms-3 text-white'>
                   Profile
-                </Link>
-                <Link to='/logout' className='text-decoration-none ms-3 text-white'>
+                </NavLink>
+
+                <NavLink 
+                  to='#'
+                  onClick={handleLogout}
+                  className='text-decoration-none ms-3 text-white'>
                   Logout
-                </Link>
+                </NavLink>
               </>
             ) : (
               <>
-                <Link to='/login' className='text-decoration-none ms-3 text-white'>
-                  Login
-                </Link>
-                <Link to='/register' className='text-decoration-none ms-3 text-white'>
+                <NavLink
+                  to='/login'
+                  className='ms-3 text-decoration-none text-white'>
+                    Login
+                </NavLink>
+
+                <NavLink
+                  to='/register'
+                  className={validateRoot}>
                   Register
-                </Link>
+                </NavLink>
               </>
             )}
           </Nav>
 
           {/* Botón de pagar (derecha) */}
           <Nav className="ms-auto">
-            <Button as={Link} to='/cart' className="mx-2">
+            <Button 
+              as={Link} 
+              to='/cart' 
+              className="mx-2"
+              disabled={ !token }
+            >
               🛒 Pagar: ${formattedTotal}
             </Button>
           </Nav>

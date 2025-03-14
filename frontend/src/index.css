@@ -22,3 +22,16 @@
 .pagar-btn {
   margin-bottom: 30px; /* Ajusta según necesites */
 }
+
+.menu-active {
+  font-weight: bold;
+
+}
+
+.menu-inactive {
+
+  color: white;
+  text-decoration: none;
+  padding-left: 15%;
+}
+

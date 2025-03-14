@@ -5,8 +5,8 @@ const Pizza = () => {
   const { id } = useParams(); // ← Obtenemos el ID desde la URL
   const { pizzas, loading, error } = usePizzas(); // ← Usamos los datos del contexto
 
-  // Buscar la pizza correspondiente
-  const pizza = pizzas.find((p) => p.id === id);
+  // Buscar la pizza correspondiente y validamos que sea como string
+  const pizza = pizzas.find((p) => String(p.id) === id);
 
   if (loading) return <p className="text-center mt-5">Cargando pizza...</p>;
   if (error) return <p className="text-center mt-5 text-danger">Error: {error}</p>;
