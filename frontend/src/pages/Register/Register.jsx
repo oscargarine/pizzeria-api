@@ -1,37 +1,43 @@
 import { useState } from "react"
-import "./Register.css"
+import "./Register.css" // Asegúrate de tener este archivo
+import { useUser } from "../../context/UserContext"
+import { useNavigate } from "react-router-dom"
 
 const Register = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const { registerUser } = useUser()
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // Validaciones
-    if (!email || !password || !confirmPassword) {
-      alert("Error: Todos los campos son obligatorios.")
+    // Validaciones simples
+    if (!email || !password) {
+      alert("Todos los campos son obligatorios.")
       return
     }
 
     if (password.length < 6) {
-      alert("Error: La contraseña debe tener al menos 6 caracteres.")
+      alert("La contraseña debe tener al menos 6 caracteres.")
       return
     }
 
-    if (password !== confirmPassword) {
-      alert("Error: Las contraseñas no coinciden.")
-      return
-    }
+    // Intentamos registrar al usuario
+    const result = await registerUser({ email, password })
 
-    alert("Registro exitoso. ¡Bienvenido!")
+    if (result.success) {
+      alert("Registro exitoso. ¡Bienvenido!")
+      navigate("/") // Redirigimos al home
+    } else {
+      alert("Error: " + result.message)
+    }
   }
 
   return (
-    <div className="register-container">
-      <div className="register-card">
-        <h1 className="register-title">Register</h1>
+    <div className="login-container">
+      <div className="login-card">
+        <h1 className="login-title">Registro</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email" className="form-label">
@@ -41,7 +47,7 @@ const Register = () => {
               type="email"
               id="email"
               className="form-input"
-              placeholder="Ingresa tu email"
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -54,26 +60,13 @@ const Register = () => {
               type="password"
               id="password"
               className="form-input"
-              placeholder="Ingresa tu clave"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="confirmPassword" className="form-label">
-              Confirmar contraseña
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              className="form-input"
-              placeholder="Confirma tu clave"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="register-button">
-            Registrar
+          <button type="submit" className="login-button">
+            Registrarse
           </button>
         </form>
       </div>
